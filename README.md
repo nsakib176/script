@@ -1,14 +1,16 @@
 # Image Gallery Downloader
 
-A Python script that automatically downloads full-resolution images from gallery URLs into organized folders.
+A Python tool that automatically downloads full-resolution images from gallery URLs into organized folders. Available as both a GUI application and command-line script.
 
 ## Features
 
+- **Easy-to-use GUI** with folder selection, progress tracking, and status updates
 - Downloads images from any gallery URL supported by [gallery-dl](https://github.com/mikf/gallery-dl)
 - Automatically creates folders named after the gallery (uses page title or URL slug)
 - Preserves original filenames when available
 - Supports batch processing of multiple URLs
 - Windows-optimized (sanitizes folder names for Windows compatibility)
+- Real-time progress bar and per-gallery status indicators
 
 ## Requirements
 
@@ -53,9 +55,45 @@ This will install:
 - `requests` - For fetching page titles
 - `beautifulsoup4` - For parsing HTML
 
+**Note:** The GUI uses Tkinter, which is built into Python - no separate installation needed!
+
 ## Usage
 
-### Basic Usage (Single URL)
+### GUI Application (Recommended)
+
+The easiest way to use the downloader is through the graphical interface:
+
+1. Activate the virtual environment if not already active:
+
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+2. Run the GUI:
+
+   ```powershell
+   python gui.py
+   ```
+
+3. In the GUI window:
+   - **Download Folder**: Select where you want to save the galleries (defaults to `downloads` folder)
+   - **Gallery URLs**: Paste one or more gallery URLs (one per line)
+   - Click **Download** to start
+   - Watch the progress bar and status updates for each gallery
+   - A popup will notify you when all downloads are complete
+
+**GUI Features:**
+
+- Overall progress bar showing completion across all galleries
+- Per-gallery status showing: Queued → Analyzing → Downloading → ✓ Success / ✗ Failed
+- Ability to change download location for each batch
+- Console output still visible in the terminal for detailed logs
+
+### Command-Line Usage
+
+If you prefer the command line, you can use the original script:
+
+#### Basic Usage (Single URL)
 
 1. Activate the virtual environment if not already active:
 
@@ -79,7 +117,7 @@ This will install:
    [press Enter twice]
    ```
 
-### Multiple URLs at Once
+#### Multiple URLs at Once
 
 You can paste multiple URLs separated by spaces or newlines:
 
@@ -90,7 +128,7 @@ https://another-site.com/collection/abc
 [press Enter twice]
 ```
 
-### How It Works
+#### How It Works
 
 For each URL:
 
@@ -100,7 +138,7 @@ For each URL:
 4. Creates a folder: `E:\sort\script\downloads\<folder-name>`
 5. Runs `gallery-dl` to download all images in full resolution
 
-### Examples
+#### Examples
 
 **Example 1: Gallery with a title**
 
@@ -143,7 +181,27 @@ This script supports any site that [gallery-dl](https://github.com/mikf/gallery-
 
 ## Troubleshooting
 
-### "gallery-dl not found" error
+### GUI Issues
+
+**GUI window doesn't open**
+
+The GUI uses Tkinter, which is built into Python. If the window doesn't appear:
+
+- Check if it's hidden behind other windows
+- Make sure you're running Python 3.8 or higher
+- On some minimal Python installations, you may need to install `python3-tk` (Linux) or reinstall Python with Tkinter support (Windows)
+
+**No progress shown during download**
+
+The progress bar updates per-gallery, not per-image. For very large galleries, it may appear stuck while downloading. Check the console output for detailed progress from gallery-dl.
+
+**Download fails but no error shown**
+
+Check the console/terminal window where you launched `gui.py`. Detailed error messages from gallery-dl will appear there.
+
+### Command-Line Issues
+
+#### "gallery-dl not found" error
 
 Make sure you've installed the requirements:
 
@@ -151,15 +209,15 @@ Make sure you've installed the requirements:
 pip install -r requirements.txt
 ```
 
-### Empty title causes weird folder names
+#### Empty title causes weird folder names
 
 The script will fall back to using the URL path segment. This is normal for sites that don't expose titles easily.
 
-### Downloads fail for certain sites
+#### Downloads fail for certain sites
 
 Some sites require authentication or have rate limits. Check the [gallery-dl documentation](https://github.com/mikf/gallery-dl/blob/master/docs/configuration.rst) for site-specific configuration options.
 
-### Script can't fetch page title
+#### Script can't fetch page title
 
 This is normal for some sites. The script will automatically fall back to using the URL path as the folder name.
 

@@ -107,12 +107,13 @@ def derive_folder_name(url: str) -> str:
     return folder_name
 
 
-def download_gallery(url: str, folder_name: str) -> bool:
+def download_gallery(url: str, folder_name: str, base_dir: Path | None = None) -> bool:
     """
     Download a gallery using gallery-dl to the specified folder.
     Returns True if successful, False otherwise.
     """
-    target_dir = BASE_DIR / folder_name
+    target_root = base_dir if base_dir is not None else BASE_DIR
+    target_dir = target_root / folder_name
     target_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"  Downloading to: {target_dir}")
